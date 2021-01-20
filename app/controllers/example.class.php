@@ -29,7 +29,13 @@
 
 		function teste()
 		{
-			echo "Method teste";
+			//echo "Method teste";
+			$data = array(
+				'texto' => 'Hello world'
+			);
+			$response = new \App\Core\Response(200,true,['Deu certo','Na verdade não'],$data);
+			//var_dump($response);
+			$response->send();
 		}
 	}
 ?>
