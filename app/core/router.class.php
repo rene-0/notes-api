@@ -5,31 +5,41 @@
 		private $controller = "example";
 		private $method = "index";
 		private $params = array();
-		
+
 		function dispatch($table)
 		{
 			$this->url = $this->parseUrl();
-			//Percorre a tabela de rotas
-				foreach($table as $key => $row)
+			//var_dump($this->url);
+			//Procura a rota atual na tabela de rotas
+				if(isset($this->url[0]))
 				{
-					if(isset($this->url[0]) && $this->url[0] == $row['url'])
+					foreach($table as $key => $row)
 					{
-						$this->controller = $this->url[0];
-						unset($this->url[0]);
-						if(file_exists("app/controllers/"."{$this->controller}.class.php"))
+						if($this->url[0] == $row['url'] && $_SERVER['REQUEST_METHOD'] === $row['REQUEST_METHOD'])
 						{
-							//Cria o controller
-								$this->controller = "App\Controllers\\".$this->controller;
-								$this->controller = new $this->controller();
-							//Cria o controller
-						}
-						else
-						{
-							throw new \Exception("Erro 404, não encontrado", 404);
+							//Reescreve o controller
+								$this->controller = $this->url[0];
+								unset($this->url[0]);
+								if(isset($row['method']))//Se o método for passado, reescreve também
+								{
+									$this->method = $row['method'];
+								}
+							//Reescreve o controller
 						}
 					}
 				}
-			//Percorre a tabela de rotas
+			//Procura a rota atual na tabela de rotas
+			//Cria o controller
+				if(file_exists("app/controllers/"."{$this->controller}.class.php"))
+				{
+					$this->controller = "App\Controllers\\".$this->controller;
+					$this->controller = new $this->controller();
+				}
+				else
+				{
+					throw new \Exception("Erro 404, não encontrado", 404);
+				}
+			//Cria o controller
 			//Chama o método
 				if(method_exists($this->controller, $this->method))//Verifica o método padrão
 				{

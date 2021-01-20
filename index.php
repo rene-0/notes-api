@@ -3,9 +3,10 @@
 	//Auto loader
 		spl_autoload_register(function ($className){
 			//var_dump($className);
-			$root = str_replace('\\','/',__DIR__);
+			$root = __DIR__;
 			//var_dump($root);
 			$file = $root. '/' .$className. '.class.php';
+			$file = str_replace("\\",'/',$file);
 			//var_dump($file);
 			if(!file_exists($file))
 			{
@@ -25,7 +26,8 @@
 	//Router
 	$router = new App\Core\Router();
 	$table = array(
-		array('url' => 'example', 'REQUEST_METHOD' => 'GET', 'controller' => 'Example')
+		array('url' => 'example', 'REQUEST_METHOD' => 'GET', 'controller' => 'Example'),
+		array('url' => 'example', 'REQUEST_METHOD' => 'POST', 'controller' => 'Example', 'method' => 'teste')
 	);
 	//var_dump($table);
 	$router->dispatch($table);

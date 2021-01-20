@@ -26,5 +26,10 @@
 		{
 			echo "Nada";
 		}
+
+		function teste()
+		{
+			echo "Method teste";
+		}
 	}
 ?>
