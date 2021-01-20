@@ -152,6 +152,7 @@
             {
                 header('Cache-control: no-cache, no-store');
             }
+            http_response_code($this->getStatusCode());
             $this->setResponseData();
             echo json_encode($this->getResponseData());
         }

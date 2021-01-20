@@ -8,7 +8,7 @@
 
 		function dispatch($table)
 		{
-			$this->url = $this->parseUrl();
+			$this->parseUrl();
 			//var_dump($this->url);
 			//Procura a rota atual na tabela de rotas
 				if(isset($this->url[0]))

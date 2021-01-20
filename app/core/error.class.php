@@ -6,7 +6,7 @@
 		//Função de loggar o erro
 		private function logError($exception)
 		{
-			ini_set('error_log',dirname(__DIR__) . '/logs/' . date('d-m-Y') . '.txt');
+			ini_set('error_log',dirname(__DIR__) . '/storage/logs/' . date('d-m-Y') . '.txt');
 			$message = "Uncaught exception: '". get_class($exception) ."'";
 			$message .= "Message: '". $exception->getMessage() ."'";
 			$message .= PHP_EOL."Stack trace:". $exception->getTraceAsString() ."";
@@ -27,24 +27,35 @@
 		{
 			if(\App\Core\Config::SHOW_ERRORS)
 			{
-				echo "<h1>Fatal error</h1>";
-				echo "<p>Uncaught exception: '". get_class($exception) ."'</p>";
-				echo "<p>Message: '". $exception->getMessage() ."'</p>";
-				echo "<p>Stack trace:<pre>". $exception->getTraceAsString() ."</pre></p>";
-				echo "<p>Throw in '". $exception->getFile() ."' on line ". $exception->getLine() ."</p>";
-			}
-			else
-			{
-				if($exception->getCode() == 404)
+				if($exception->getCode() == 0 || $exception->getCode() == 500)//Se for um erro convertido para exceção, o código é 0
 				{
-					http_response_code(404);
-					require_once("../app/views/error404.php");
+					echo "<h1>Fatal error</h1>";
+					echo "<p>Uncaught exception: '". get_class($exception) ."'</p>";
+					echo "<p>Message: '". $exception->getMessage() ."'</p>";
+					echo "<p>Stack trace:<pre>". $exception->getTraceAsString() ."</pre></p>";
+					echo "<p>Throw in '". $exception->getFile() ."' on line ". $exception->getLine() ."</p>";
 				}
 				else
 				{
-					http_response_code(500);
+					//Caso seja uma exceção criada pelo próprio script, as que vem com o código (400,401, etc)
+					$response = new \App\Core\Response($exception->getCode(),false,$exception->getMessage());
+					$response->send();
+				}
+			}
+			else
+			{
+				if($exception->getCode() == 0 || $exception->getCode() == 500)//Caso seja uma exceção que foi convertida para erro
+				{
+					//Envia uma mensagem genérica
 					(new self)->logError($exception);
-					require_once("../app/views/error.php");
+					$response = new \App\Core\Response(500,false,"Erro 500, o servidor não conseguiu processar sua requisição");
+					$response->send();
+				}
+				else
+				{
+					//Caso seja uma exceção criada pelo próprio script, as que vem com o código (400,401, etc)
+					$response = new \App\Core\Response($exception->getCode(),false,$exception->getMessage());
+					$response->send();
 				}
 			}
 		}
