@@ -78,17 +78,40 @@
 
         function setMessage($message)
         {
-            if(!is_string($message))
+            if(is_array($message))
             {
-                throw new \Exception("message deve ser uma string", 500);
-            }
-            elseif($message === '')
-            {
-                throw new \Exception("message não pode ser vazio", 500);
+                if(count($message) <= 0)
+                {
+                    throw new \Exception("message deve ser uma string ou um array com somente strings", 500);
+                }
+                else
+                {
+                    foreach($message as $key => $row)
+                    {
+                        if(!is_string($row))
+                        {
+                            throw new \Exception("linha {$key} não é string, message deve ser uma string ou um array com somente strings", 500);
+                            break;
+                        }
+                    }
+                    //$this->message[] = $message;
+                    $this->message = array_merge($this->message, $message);
+                }
             }
             else
             {
-               $this->message[] = $message; 
+                if(!is_string($message))
+                {
+                    throw new \Exception("message deve ser uma string ou um array com somente strings", 500);
+                }
+                elseif($message === '')
+                {
+                    throw new \Exception("message não pode ser vazio", 500);
+                }
+                else
+                {
+                   $this->message[] = $message; 
+                }
             }
         }
 
