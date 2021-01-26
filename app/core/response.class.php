@@ -94,7 +94,6 @@
                             break;
                         }
                     }
-                    //$this->message[] = $message;
                     $this->message = array_merge($this->message, $message);
                 }
             }

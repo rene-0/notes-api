@@ -28,6 +28,21 @@
 						}
 					}
 				}
+				else
+				{
+					foreach($table as $key => $row)
+					{
+						if($this->controller == $row['url'] && $_SERVER['REQUEST_METHOD'] === $row['REQUEST_METHOD'])
+						{
+							//Reescreve o controller
+								if(isset($row['method']))//Se o método for passado, reescreve também
+								{
+									$this->method = $row['method'];
+								}
+							//Reescreve o controller
+						}
+					}
+				}
 			//Procura a rota atual na tabela de rotas
 			//Cria o controller
 				if(file_exists("app/controllers/"."{$this->controller}.class.php"))
