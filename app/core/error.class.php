@@ -37,6 +37,7 @@
 				}
 				else
 				{
+					header('Content-type: aplication/json;charset=utf-8');
 					//Caso seja uma exceção criada pelo próprio script, as que vem com o código (400,401, etc)
 					$response = new \App\Core\Response($exception->getCode(),false,$exception->getMessage());
 					$response->send();
@@ -44,6 +45,7 @@
 			}
 			else
 			{
+				header('Content-type: aplication/json;charset=utf-8');
 				if($exception->getCode() == 0 || $exception->getCode() == 500)//Caso seja uma exceção que foi convertida para erro
 				{
 					//Envia uma mensagem genérica

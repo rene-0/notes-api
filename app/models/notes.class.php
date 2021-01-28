@@ -3,26 +3,26 @@
     class Notes
     {
         private $id_note;
-        private $titulo;
-        private $descricao;
-        private $prazo;
-        private $cor;
-        private $data_cricao;
-        private $data_modificacao;
-        private $completo;
-        private $id_usuario;
+        private $title;
+        private $description;
+        private $deadline;
+        private $color;
+        private $creation;
+        private $modification;
+        private $complete;
+        private $id_user;
 
-        function __construct($id_note = null, $titulo, $descricao, $prazo, $cor, $data_cricao, $data_modificacao, $completo, $id_usuario = null)
+        function __construct($id_note = null, $title, $description, $deadline, $color, $creation, $modification, $complete, $id_user = null)
         {
             $this->id_note = $id_note;
-            $this->titulo = $titulo;
-            $this->descricao = $descricao;
-            $this->prazo = $prazo;
-            $this->cor = $cor;
-            $this->data_cricao = $data_cricao;
-            $this->data_modificacao = $data_modificacao;
-            $this->completo = $completo;
-            $this->id_usuario = $id_usuario;
+            $this->title = $title;
+            $this->description = $description;
+            $this->deadline = $deadline;
+            $this->color = $color;
+            $this->creation = $creation;
+            $this->modification = $modification;
+            $this->complete = $complete;
+            $this->id_user = $id_user;
         }
 
         //getters
@@ -31,44 +31,44 @@
             return $this->id_note;
         }
 
-        function getTitulo()
+        function getTitle()
         {
-            return $this->titulo;
+            return $this->title;
         }
 
-        function getDescricao()
+        function getDescription()
         {
-            return $this->descricao;
+            return $this->description;
         }
 
-        function getPrazo()
+        function getDeadline()
         {
-            return $this->prazo;
+            return $this->deadline;
         }
 
-        function getCor()
+        function getColor()
         {
-            return $this->cor;
+            return $this->color;
         }
 
-        function getData_cricao()
+        function getCreation()
         {
-            return $this->data_cricao;
+            return $this->creation;
         }
 
-        function getData_modificacao()
+        function getModification()
         {
-            return $this->data_modificacao;
+            return $this->modification;
         }
 
-        function getCompleto()
+        function getComplete()
         {
-            return $this->completo;
+            return $this->complete;
         }
 
-        function getId_usuario()
+        function getId_user()
         {
-            return $this->id_usuario;
+            return $this->id_user;
         }
 
         //setters
@@ -88,22 +88,22 @@
             }
         }
 
-        function setTitulo($titulo)
+        function setTitle($title)
         {
-            if(is_string($titulo))
+            if(is_string($title))
             {
-                $titulo = trim($titulo);
-                if(strlen($titulo) > 255)
+                $title = trim($title);
+                if(strlen($title) > 255)
                 {
                     throw new \Exception('Titulo não pode ser maior que 255 caracteres',400);
                 }
-                elseif(strlen($titulo) < 3)
+                elseif(strlen($title) < 3)
                 {
                     throw new \Exception('Titulo não pode ser menor que 3 caracteres',400);
                 }
                 else
                 {
-                    $this->titulo = $titulo;
+                    $this->title = $title;
                 }
             }
             else
@@ -112,22 +112,22 @@
             }
         }
 
-        function setDescricao($descricao)
+        function setDescription($description)
         {
-            if(is_string($descricao))
+            if(is_string($description))
             {
-                $descricao = trim($descricao);
-                if(strlen($descricao) > 255)
+                $description = trim($description);
+                if(strlen($description) > 255)
                 {
                     throw new \Exception('Descrição não pode ser maior que 255 caracteres',400);
                 }
-                elseif(strlen($descricao) < 3)
+                elseif(strlen($description) < 3)
                 {
                     throw new \Exception('Descrição não pode ser menor que 3 caracteres',400);
                 }
                 else
                 {
-                    $this->descricao = $descricao;
+                    $this->description = $description;
                 }
             }
             else
@@ -136,12 +136,12 @@
             }
         }
 
-        function setPrazo($prazo)
+        function setDeadline($deadline)
         {
-            if(is_string($prazo))
+            if(is_string($deadline))
 			{
-				$prazo = trim($prazo);
-                if(!preg_match("/(?<Y>\d{4})-(?<m>\d{2})-(?<d>\d{2}) (?<H>\d{2}):(?<i>\d{2}):(?<s>\d{2})/i", $prazo, $match))
+				$deadline = trim($deadline);
+                if(!preg_match("/(?<Y>\d{4})-(?<m>\d{2})-(?<d>\d{2}) (?<H>\d{2}):(?<i>\d{2}):(?<s>\d{2})/i", $deadline, $match))
                 {
                     throw new \Exception('Data inválida',400);
                 }
@@ -151,7 +151,7 @@
                 }
 				else
 				{
-					$this->prazo = $prazo;
+					$this->deadline = $deadline;
 				}
 			}
 			else
@@ -160,26 +160,26 @@
 			}
         }
 
-        function setCor($cor)
+        function setColor($color)
         {
-            if(is_string($cor))
+            if(is_string($color))
             {
-                $cor = trim($cor);
-                if(strlen($cor) !== 7)
+                $color = trim($color);
+                if(strlen($color) !== 7)
                 {
                     throw new \Exception('Cor deve conter 7 caracteres',400);
                 }
-                elseif($cor === '')
+                elseif($color === '')
                 {
                     throw new \Exception('Cor não pode ser vazio',400);
                 }
-                elseif(!preg_match('/^#(\d{6})$/',$cor))
+                elseif(!preg_match('/^#(\d{6})$/',$color))
                 {
                     throw new \Exception('Formato inválido',400);
                 }
                 else
                 {
-                    $this->cor = $cor;
+                    $this->color = $color;
                 }
             }
             else
@@ -188,12 +188,12 @@
             }
         }
 
-        function setData_cricao($data_cricao)
+        function setCreation($creation)
         {
-            if(is_string($data_cricao))
+            if(is_string($creation))
 			{
-				$data_cricao = trim($data_cricao);
-                if(!preg_match("/(?<Y>\d{4})-(?<m>\d{2})-(?<d>\d{2}) (?<H>\d{2}):(?<i>\d{2}):(?<s>\d{2})/i", $data_cricao, $match))
+				$creation = trim($creation);
+                if(!preg_match("/(?<Y>\d{4})-(?<m>\d{2})-(?<d>\d{2}) (?<H>\d{2}):(?<i>\d{2}):(?<s>\d{2})/i", $creation, $match))
                 {
                     throw new \Exception('Data inválida',400);
                 }
@@ -203,7 +203,7 @@
 				}
 				else
 				{
-					$this->data_cricao = $data_cricao;
+					$this->creation = $creation;
 				}
 			}
 			else
@@ -212,12 +212,12 @@
 			}
         }
 
-        function setData_modificacao($data_modificacao)
+        function setModification($modification)
         {
-            if(is_string($data_modificacao))
+            if(is_string($modification))
 			{
-				$data_modificacao = trim($data_modificacao);
-                if(!preg_match("/(?<Y>\d{4})-(?<m>\d{2})-(?<d>\d{2}) (?<H>\d{2}):(?<i>\d{2}):(?<s>\d{2})/i", $data_modificacao, $match))
+				$modification = trim($modification);
+                if(!preg_match("/(?<Y>\d{4})-(?<m>\d{2})-(?<d>\d{2}) (?<H>\d{2}):(?<i>\d{2}):(?<s>\d{2})/i", $modification, $match))
                 {
                     throw new \Exception('Data inválida',400);
                 }
@@ -227,7 +227,7 @@
 				}
 				else
 				{
-					$this->data_modificacao = $data_modificacao;
+					$this->modification = $modification;
 				}
 			}
 			else
@@ -236,31 +236,31 @@
 			}
         }
 
-        function setCompleto($completo)
+        function setComplete($complete)
         {
-            if($completo !== false && $completo !== true)
+            if($complete !== false && $complete !== true)
             {
                 throw new \Exception('Completo só pode true ou false',400);
             }
             else
             {
-                $this->completo = $completo;
+                $this->complete = $complete;
             }
         }
 
-        function setId_usuario($id_usuario)
+        function setId_user($id_user)
         {
-            if(!is_int($id_usuario))
+            if(!is_int($id_user))
 			{
                 throw new \Exception('Id inválido',400);
             }
-            elseif($id_usuario === 0)
+            elseif($id_user === 0)
             {
                 throw new \Exception('Id inválido',400);
             }
             else
             {
-                $this->id_usuario = $id_usuario;
+                $this->id_user = $id_user;
             }
         }
     }
