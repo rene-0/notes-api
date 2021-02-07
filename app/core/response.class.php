@@ -54,7 +54,7 @@
         //Setters
         function setStatusCode($statusCode)
         {
-            if(!is_int($this->statusCode = $statusCode))
+            if(!is_int($statusCode))
             {
                 throw new \Exception("statusCode deve ser um inteiro", 500);
             }

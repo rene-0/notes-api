@@ -24,11 +24,14 @@
 		set_exception_handler('App\Core\Error::exceptionHandler');
 		date_default_timezone_set('America/Sao_Paulo');
 	//Router
-	$router = new App\Core\Router();
-	$table = array(
-		array('url' => 'example', 'REQUEST_METHOD' => 'GET', 'controller' => 'Example'),
-		array('url' => 'example', 'REQUEST_METHOD' => 'POST', 'controller' => 'Example', 'method' => 'teste')
-	);
-	//var_dump($table);
-	$router->dispatch($table);
+$table = array(
+	array('url' => 'example', 'REQUEST_METHOD' => 'GET', 'controller' => 'Example'),
+	array('url' => 'example', 'REQUEST_METHOD' => 'POST', 'controller' => 'Example', 'method' => 'teste'),
+	array('url' => 'notes', 'REQUEST_METHOD' => 'POST', 'controller' => 'Notes', 'method' => 'createNote'),
+	array('url' => 'notes', 'REQUEST_METHOD' => 'GET', 'controller' => 'Notes', 'method' => 'getNotes'),
+	array('url' => 'users', 'REQUEST_METHOD' => 'POST', 'CONTENT_TYPE' => 'application/json', 'controller' => 'User', 'method' => 'createUser'),
+	array('url' => 'sessions', 'REQUEST_METHOD' => 'POST', 'CONTENT_TYPE' => 'application/json', 'controller' => 'Session', 'method' => 'login')
+);
+	$router = new App\Core\Router($table);
+	$router->dispatch();
 ?>

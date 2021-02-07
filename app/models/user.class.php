@@ -9,7 +9,7 @@
         private $tries;
         private $active;
 
-        function __construct($id_user,$name,$user,$password,$tries,$active)
+        function __construct($id_user = null,$name = null,$user = null,$password = null,$tries = null,$active = null)
         {
             $this->id_user = $id_user;
             $this->name = $name;
@@ -124,9 +124,9 @@
                 {
                     throw new \Exception('Senha não pode ser maior que 255 caracteres',400);
                 }
-                elseif(strlen($password) < 3)
+                elseif(strlen($password) < 8)
                 {
-                    throw new \Exception('Senha não pode ser menor que 3 caracteres',400);
+                    throw new \Exception('Senha não pode ser menor que 8 caracteres',400);
                 }
                 else
                 {

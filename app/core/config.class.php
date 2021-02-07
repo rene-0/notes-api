@@ -6,7 +6,7 @@
 		const DB_HOST = 'localhost';
 		
 		//Nome do banco de dados
-		const DB_NAME = 'receitasOn';
+		const DB_NAME = 'notes-api';
 		//const DB_NAME = 'renede48_receitasOn';
 		
 		//Usuário do banco de dados

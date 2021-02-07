@@ -1,6 +1,6 @@
 <?php
     namespace App\Models;
-    class Notes
+    class Note
     {
         private $id_note;
         private $title;
@@ -12,7 +12,7 @@
         private $complete;
         private $id_user;
 
-        function __construct($id_note = null, $title, $description, $deadline, $color, $creation, $modification, $complete, $id_user = null)
+        function __construct($id_note = null, $title = null, $description = null, $deadline = null, $color = null, $creation = null, $modification = null, $complete = null, $id_user = null)
         {
             $this->id_note = $id_note;
             $this->title = $title;
@@ -244,7 +244,14 @@
             }
             else
             {
-                $this->complete = $complete;
+                if($complete === true)
+                {
+                    $this->complete = 's';
+                }
+                else
+                {
+                    $this->complete = 'n';
+                }
             }
         }
 
