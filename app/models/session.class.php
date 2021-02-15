@@ -9,7 +9,7 @@
         private $refresh_token_expiry;
         private $id_user;
 
-        function __construct($id_session,$access_token,$access_token_expiry,$refresh_token,$refresh_token_expiry,$id_user)
+        function __construct($id_session = null,$access_token = null,$access_token_expiry = null,$refresh_token = null,$refresh_token_expiry = null,$id_user = null)
         {
             $this->id_session = $id_session;
             $this->access_token = $access_token;
