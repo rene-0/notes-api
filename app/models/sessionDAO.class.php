@@ -65,5 +65,15 @@
             $ret = $stm->fetch(PDO::FETCH_OBJ);
             return $ret;
         }
+
+        function logout($session)
+        {
+            $sql = "DELETE FROM session WHERE access_token = ?";
+            parent::getConnection();
+            $stm = parent::$connec->prepare($sql);
+            $stm->bindValue(1,$session->getAccess_token());
+            $ret = $stm->execute();
+            return $ret;
+        }
     }
 ?>

@@ -31,7 +31,8 @@ $table = array(
 	array('url' => 'notes', 'REQUEST_METHOD' => 'GET', 'controller' => 'Notes', 'method' => 'getNotes'),
 	array('url' => 'users', 'REQUEST_METHOD' => 'POST', 'CONTENT_TYPE' => 'application/json', 'controller' => 'User', 'method' => 'createUser'),
 	array('url' => 'sessions', 'REQUEST_METHOD' => 'POST', 'CONTENT_TYPE' => 'application/json', 'controller' => 'Session', 'method' => 'login'),
-	array('url' => 'sessions', 'REQUEST_METHOD' => 'PATCH', 'CONTENT_TYPE' => 'application/json', 'controller' => 'Session', 'method' => 'refresh')
+	array('url' => 'sessions', 'REQUEST_METHOD' => 'PATCH', 'CONTENT_TYPE' => 'application/json', 'controller' => 'Session', 'method' => 'refresh'),
+	array('url' => 'sessions', 'REQUEST_METHOD' => 'DELETE', 'CONTENT_TYPE' => 'application/json', 'controller' => 'Session', 'method' => 'logout')
 );
 	$router = new App\Core\Router($table);
 	$router->dispatch();

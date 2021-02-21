@@ -67,18 +67,18 @@
             }
         }
 
-        function setAcess_token($access_token)
+        function setAccess_token($access_token)
         {
             if(is_string($access_token))
             {
                 $access_token = trim($access_token);
                 if(strlen($access_token) > 255)
                 {
-                    throw new \Exception('Token de acesso não pode ser maior que 255 caracteres',500);
+                    throw new \Exception('Token de acesso não pode ser maior que 255 caracteres',400);
                 }
                 elseif(strlen($access_token) < 3)
                 {
-                    throw new \Exception('Token de acesso não pode ser menor que 3 caracteres',500);
+                    throw new \Exception('Token de acesso não pode ser menor que 3 caracteres',400);
                 }
                 else
                 {
@@ -87,7 +87,7 @@
             }
             else
             {
-                throw new \Exception('Token de acesso deve ser uma string',500);
+                throw new \Exception('Token de acesso deve ser uma string',400);
             }
         }
 
@@ -122,11 +122,11 @@
                 $refresh_token = trim($refresh_token);
                 if(strlen($refresh_token) > 255)
                 {
-                    throw new \Exception('Token de refresh não pode ser maior que 255 caracteres',500);
+                    throw new \Exception('Token de recarga não pode ser maior que 255 caracteres',400);
                 }
                 elseif(strlen($refresh_token) < 3)
                 {
-                    throw new \Exception('Token de refresh não pode ser menor que 3 caracteres',500);
+                    throw new \Exception('Token de recarga não pode ser menor que 3 caracteres',400);
                 }
                 else
                 {
@@ -135,7 +135,7 @@
             }
             else
             {
-                throw new \Exception('Token de refresh deve ser uma string',500);
+                throw new \Exception('Token de refresh deve ser uma string',400);
             }
         }
 

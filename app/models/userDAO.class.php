@@ -54,7 +54,7 @@
             $sql = "UPDATE user SET tries = (tries + 1) WHERE id_user = ?";
             parent::getConnection();
             $stm = parent::$connec->prepare($sql);
-            $stm->bindValue(1, $user->getUser());
+            $stm->bindValue(1, $user->getId_user());
             $ret = $stm->execute();
             return $ret;
         }
@@ -64,8 +64,19 @@
             $sql = "UPDATE user SET tries = 0 WHERE id_user = ?";
             parent::getConnection();
             $stm = parent::$connec->prepare($sql);
-            $stm->bindValue(1, $user->getUser());
+            $stm->bindValue(1, $user->getId_user());
             $ret = $stm->execute();
+            return $ret;
+        }
+
+        function checkUserSession($session)
+        {
+            $sql = "SELECT * FROM user u INNER JOIN session s ON(u.id_user = s.id_user) WHERE s.access_token = ?";
+            parent::getConnection();
+            $stm = parent::$connec->prepare($sql);
+            $stm->bindValue(1,$session->getAccess_token());
+            $stm->execute();
+            $ret = $stm->fetch(PDO::FETCH_OBJ);
             return $ret;
         }
     }

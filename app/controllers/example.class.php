@@ -45,7 +45,15 @@
 			$user->setAtivo('s');
 			echo "<pre>";
 			var_dump($user);*/
-			echo "Example index";
+			//echo "Example index";
+			$time = time() + 1200;
+			echo gmdate("Y-m-d H:i:s", $time);
+			echo '<br>';
+			echo gmdate("Y-m-d H:i:s", time());
+			echo '<br>';
+			echo date('Y-m-d H:i:s', strtotime('+20 minutes'));
+			echo '<br>';
+			echo date('Y-m-d H:i:s', strtotime('+14 days'));
 		}
 		
 		function teste()

@@ -24,22 +24,24 @@
 			$post_value = file_get_contents('php://input');
 			$obj = parent::json($post_value);
 			$user = new \App\Models\User();
-			if(isset($obj->user))
-			{
-				$user->setUser($obj->user);
-			}
-			else
-			{
-				throw new \Exception("Erro, nome de usuário deve ser enviado",400);
-			}
-			if(isset($obj->password))
-			{
-				$user->setPassword($obj->password);
-			}
-			else
-			{
-				throw new \Exception("Erro, senha deve ser enviado",400);
-			}
+			//Criando o usuário
+				if(isset($obj->user))
+				{
+					$user->setUser($obj->user);
+				}
+				else
+				{
+					throw new \Exception("Erro, nome de usuário deve ser enviado",400);
+				}
+				if(isset($obj->password))
+				{
+					$user->setPassword($obj->password);
+				}
+				else
+				{
+					throw new \Exception("Erro, senha deve ser enviado",400);
+				}
+			//Criando o usuário
 			$userDAO = new \App\Models\UserDAO();
 			$ret = $userDAO->login($user);
 			if($ret === false)
@@ -76,9 +78,9 @@
 							$data = array(
 								'id_session' => $ret->id_session,
 								'access_token' => $ret->access_token,
-								'access_token_expiry' => $ret->access_token_expiry,
+								'access_token_expiry' => strtotime($ret->access_token_expiry),
 								'refresh_token' => $ret->refresh_token,
-								'refresh_token_expiry' => $ret->refresh_token_expiry,
+								'refresh_token_expiry' => strtotime($ret->refresh_token_expiry),
 								'id_user' => $ret->id_user
 							);
 							$response = new \App\Core\Response(201,true,'Sessão criada',$data);
@@ -101,7 +103,6 @@
         function refresh()
         {
 			$headers = apache_request_headers();
-			//var_dump($headers['Authorization']);
 			//Access_token
 				if(!isset($headers['Authorization']))
 				{
@@ -144,9 +145,8 @@
 			//id_session
 			$session = new \App\Models\Session();
 			$session->setRefresh_token($obj->refresh_token);
-			$session->setAcess_token($headers['Authorization']);
+			$session->setAccess_token($headers['Authorization']);
 			$session->setId_session($obj->id_session);
-			//var_dump($session);
 			$userDAO = new \App\Models\UserDAO();
 			$sessionDAO = new \App\Models\SessionDAO();
 			$ret = $sessionDAO->checkSession($session);
@@ -184,5 +184,32 @@
 				$response->send();
 			}
         }
+
+		function logout()
+		{
+			//Testa o json
+				$post_value = file_get_contents('php://input');
+				$obj = parent::json($post_value);
+			//Testa o json
+			//Testa o usuário e o token
+				$check = parent::checkUser();
+			//Testa o usuário e o token
+			$session = new \App\Models\Session();
+			$session->setAccess_token($check->access_token);
+			$sessionDAO = new \App\Models\SessionDAO();
+			$ret = $sessionDAO->logout($session);
+			if(!$ret)
+			{
+				throw new \Exception("Erro ao fazer logout",500);
+			}
+			else
+			{
+				$data = array(
+					"id_session" => $check->id_session
+				);
+				$response = new \App\Core\Response(200,true,"Sessão deletada",$data);
+				$response->send();
+			}
+		}
 	}
 ?>
