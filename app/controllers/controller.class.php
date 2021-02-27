@@ -48,7 +48,15 @@
 				else
 				{
 					$user = new \App\Models\User($ret->id_user);
-					if($ret->tries >= 3)
+					if(strtotime($ret->access_token_expiry) < time())
+					{
+						throw new \Exception("Token de acesso expirado, recarregue o token",401);
+					}
+					elseif(strtotime($ret->refresh_token_expiry) < time())
+					{
+						throw new \Exception('Token de atualização expirado, faça login novamente',400);
+					}
+					elseif($ret->tries >= 3)
 					{
 						$userDAO->addAttenpt($user);
 						throw new \Exception("Limite de tentativas excedido",401);

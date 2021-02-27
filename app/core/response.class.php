@@ -120,10 +120,6 @@
             {
                 throw new \Exception("data deve ser um array", 500);
             }
-            elseif(empty($data))
-            {
-                throw new \Exception("data não pode ser vazio", 500);
-            }
             else
             {
                 $this->data = $data;

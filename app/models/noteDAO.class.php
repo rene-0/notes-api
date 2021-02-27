@@ -13,6 +13,17 @@
             return $ret;
         }
 
+        function getNotesByUser($user)
+        {
+            $sql = "SELECT * FROM notes WHERE id_user = ?";
+            parent::getConnection();
+            $stm = parent::$connec->prepare($sql);
+            $stm->bindValue(1, $user->getId_user());
+            $stm->execute();
+            $ret = $stm->fetchAll(PDO::FETCH_OBJ);
+            return $ret;
+        }
+
         function createNote($note)
         {
             $sql = "INSERT INTO notes (title,description, deadline, color, creation, modification, complete, id_user) VALUES (?,?,?,?,?,?,?,?)";
@@ -27,6 +38,16 @@
             $stm->bindValue(7,$note->getComplete());
             $stm->bindValue(8,$note->getId_user());
             $ret = $stm->execute();
+            return $ret;
+        }
+
+        function getLastNote()
+        {
+            $sql = "SELECT * FROM notes ORDER BY id_note DESC LIMIT 1";
+            parent::getConnection();
+            $stm = parent::$connec->prepare($sql);
+            $stm->execute();
+            $ret = $stm->fetch(PDO::FETCH_OBJ);
             return $ret;
         }
     }
