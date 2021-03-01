@@ -32,7 +32,7 @@
 			//var_dump($obj);
 			if(!isset($obj->notes))
 			{
-				throw new \Exception("Erro, json inválido",405);
+				throw new \Exception("Erro, json inválido",400);
 			}
 			else
 			{
@@ -40,23 +40,23 @@
 				{
 					if(!isset($dados->title))
 					{
-						throw new \Exception("Erro, title deve ser enviado - [{$key}]",405);
+						throw new \Exception("Erro, title deve ser enviado - [{$key}]",400);
 					}
 					elseif(!isset($dados->description))
 					{
-						throw new \Exception("Erro, description deve ser enviado - [{$key}]",405);
+						throw new \Exception("Erro, description deve ser enviado - [{$key}]",400);
 					}
 					elseif(!isset($dados->deadline))
 					{
-						throw new \Exception("Erro, deadline deve ser enviado - [{$key}]",405);
+						throw new \Exception("Erro, deadline deve ser enviado - [{$key}]",400);
 					}
 					elseif(!isset($dados->color))
 					{
-						throw new \Exception("Erro, color deve ser enviado - [{$key}]",405);
+						throw new \Exception("Erro, color deve ser enviado - [{$key}]",400);
 					}
 					elseif(!isset($dados->complete))
 					{
-						throw new \Exception("Erro, complete deve ser enviado - [{$key}]",405);
+						throw new \Exception("Erro, complete deve ser enviado - [{$key}]",400);
 					}
 				}
 			}
@@ -118,6 +118,87 @@
 			$response->send();
 		}
 		
+		function alterNote()
+		{
+			//Testa o json
+				$post_value = file_get_contents('php://input');
+				$obj = parent::json($post_value);
+			//Testa o json
+			//Testa o usuário e o token
+				$check = parent::checkUser();
+			//Testa o usuário e o token
+			//Testa o envio
+				if(!isset($obj->id_note))
+				{
+					throw new \Exception("Erro, ID da nota deve ser enviado",400);
+				}
+				elseif(!isset($obj->title) && !isset($obj->description) && !isset($obj->color) && !isset($obj->complete) && !isset($obj->deadline))
+				{
+					throw new \Exception("Erro, um ou mais dos seguintes parametros devem ser enviados: title, description, color, complete e deadline",400);
+				}
+			//Testa o envio
+			//Cria a nota
+				$note = new \App\Models\Note();
+				$note->setId_note($obj->id_note);
+				if(isset($obj->title))
+				{
+					$note->setTitle($obj->title);
+				}
+
+				if(isset($obj->description))
+				{
+					$note->setDescription($obj->description);
+				}
+				
+				if(isset($obj->color))
+				{
+					$note->setColor($obj->color);
+				}
+
+				if(isset($obj->complete))
+				{
+					$note->setComplete($obj->complete);
+				}
+
+				if(isset($obj->deadline))
+				{
+					$note->setDeadline($obj->deadline);
+				}
+				$note->setId_user((int) $check->id_user);
+			//Cria a nota
+			//var_dump($note);
+			//Procura se a nota pertence ao usuário
+				$noteDAO = new \App\Models\NoteDAO();
+				$ret = $noteDAO->getNoteByUser($note);
+				if($ret === false)
+				{
+					throw new \Exception("Erro, nota não encontrada",400);
+				}
+			//Procura se a nota pertence ao usuário
+			$ret = $noteDAO->alterNote($note);
+			if($ret === false)
+			{
+				throw new \Exception('Não foi possível alterar a nota',500);
+			}
+			else
+			{
+				$ret = $noteDAO->getNote($note);
+				$data = array(
+					"id_note" => $ret->id_note,
+					"title" => $ret->title,
+					"description" => $ret->description,
+					"deadline" => $ret->deadline,
+					"color" => $ret->color,
+					"complete" => $ret->complete,
+					"creation" => $ret->creation,
+					"modification" => $ret->modification
+					
+				);
+				$response = new \App\Core\Response(200, true,"Nota alterada", $data, false);
+				$response->send();
+			}
+		}
+
 		protected function getNotes()
 		{
 			//Testa o usuário e o token

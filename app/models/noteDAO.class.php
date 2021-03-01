@@ -13,6 +13,29 @@
             return $ret;
         }
 
+        function getNote($note)
+        {
+            $sql = "SELECT * FROM notes WHERE id_note = ?";
+            parent::getConnection();
+            $stm = parent::$connec->prepare($sql);
+            $stm->bindValue(1, $note->getId_note());
+            $stm->execute();
+            $ret = $stm->fetch(PDO::FETCH_OBJ);
+            return $ret;
+        }
+
+        function getNoteByUser($note)
+        {
+            $sql = "SELECT * FROM notes WHERE id_user = ? AND id_note = ?";
+            parent::getConnection();
+            $stm = parent::$connec->prepare($sql);
+            $stm->bindValue(1, $note->getId_user());
+            $stm->bindValue(2, $note->getId_note());
+            $stm->execute();
+            $ret = $stm->fetch(PDO::FETCH_OBJ);
+            return $ret;
+        }
+
         function getNotesByUser($user)
         {
             $sql = "SELECT * FROM notes WHERE id_user = ?";
@@ -48,6 +71,70 @@
             $stm = parent::$connec->prepare($sql);
             $stm->execute();
             $ret = $stm->fetch(PDO::FETCH_OBJ);
+            return $ret;
+        }
+
+        function alterNote($note)
+        {
+            //Complemento
+                $up = "";
+                if($note->getTitle() != NULL)
+                {
+                    $up .= "title = :title, ";
+                }
+                if($note->getDescription() != NULL)
+                {
+                    $up .= "description = :description, ";
+                }
+                if($note->getColor() != NULL)
+                {
+                    $up .= "color = :color, ";
+                }
+                if($note->getComplete() != NULL)
+                {
+                    $up .= "complete = :complete, ";
+                }
+                if($note->getDeadline() != NULL)
+                {
+                    $up .= "deadline = :deadline, ";
+                }
+                if($up === '')
+                {
+                    throw new \Exceptionm("Erro, parte da SQL de update malformada",500);
+                }
+                else
+                {
+                    $up = substr($up,0,-2);//Retira a virgula e o espaço (, ) do complemento
+                }
+            //Complemento
+            $sql = "UPDATE notes SET {$up} WHERE id_note = :id_note AND id_user = :id_user";
+            parent::getConnection();
+            $stm = parent::$connec->prepare($sql);
+            //Bind de complemento
+                if($note->getTitle() != NULL)
+                {
+                    $stm->bindValue(':title', $note->getTitle());
+                }
+                if($note->getDescription() != NULL)
+                {
+                    $stm->bindValue(':description', $note->getDescription());
+                }
+                if($note->getColor() != NULL)
+                {
+                    $stm->bindValue(':color', $note->getColor());
+                }
+                if($note->getComplete() != NULL)
+                {
+                    $stm->bindValue(':complete', $note->getComplete());
+                }
+                if($note->getDeadline() != NULL)
+                {
+                    $stm->bindValue(':deadline', $note->getDeadline());
+                }
+            //Bind de complemento
+            $stm->bindValue(':id_note', $note->getId_note());
+            $stm->bindValue(':id_user', $note->getId_user());
+            $ret = $stm->execute();
             return $ret;
         }
     }
