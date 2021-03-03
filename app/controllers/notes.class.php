@@ -165,6 +165,7 @@
 					$note->setDeadline($obj->deadline);
 				}
 				$note->setId_user((int) $check->id_user);
+				$note->setModification(date("Y-m-d H:i:s"));
 			//Cria a nota
 			//var_dump($note);
 			//Procura se a nota pertence ao usuário
@@ -223,6 +224,53 @@
 			}
 			$response = new \App\Core\Response(200, true, 'Notas buscadas', $data, true);
 			$response->send();
+		}
+
+		protected function deleteNote()
+		{
+			//Testa o json
+				$post_value = file_get_contents('php://input');
+				$obj = parent::json($post_value);
+			//Testa o json
+			//Testa o usuário e o token
+				$check = parent::checkUser();
+			//Testa o usuário e o token
+			if(!isset($obj->id_note))
+			{
+				throw new \Exception("Erro, ID da nota deve ser enviado",400);
+			}
+			$note = new \App\Models\Note();
+			$note->setId_note($obj->id_note);
+			$note->setId_user((int) $check->id_user);
+
+			$noteDAO = new \App\Models\NoteDAO();
+			$ret = $noteDAO->getNoteByUser($note);
+			if($ret === false)
+			{
+				throw new \Exception('Erro, nota não encontrada',400);
+			}
+
+			$data = array(
+				"id_note" => $ret->id_note,
+				"title" => $ret->title,
+				"description" => $ret->description,
+				"deadline" => $ret->deadline,
+				"color" => $ret->color,
+				"complete" => $ret->complete,
+				"creation" => $ret->creation,
+				"modification" => $ret->modification
+			);
+
+			$ret = $noteDAO->deleteNote($note);
+			if($ret === false)
+			{
+				throw new \Exception('Não foi possível remover a nota',500);
+			}
+			else
+			{
+				$response = new \App\Core\Response(200, true, 'Nota removida', $data, true);
+				$response->send();
+			}
 		}
 	}
 ?>

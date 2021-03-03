@@ -140,7 +140,8 @@
 			//Testa o usuário
 				$session->setAccess_token($headers['Authorization']);
 				$userDAO = new \App\Models\UserDAO();
-				$ret = $userDAO->checkUserSession($session);
+				$sessionDAO = new \App\Models\SessionDAO();
+				$ret = $sessionDAO->checkSession($session);
 				//Checa o usuário
 					if(!$ret)
 					{

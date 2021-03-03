@@ -107,7 +107,7 @@
                     $up = substr($up,0,-2);//Retira a virgula e o espaço (, ) do complemento
                 }
             //Complemento
-            $sql = "UPDATE notes SET {$up} WHERE id_note = :id_note AND id_user = :id_user";
+            $sql = "UPDATE notes SET {$up} ,modification = :modification WHERE id_note = :id_note AND id_user = :id_user";
             parent::getConnection();
             $stm = parent::$connec->prepare($sql);
             //Bind de complemento
@@ -134,6 +134,18 @@
             //Bind de complemento
             $stm->bindValue(':id_note', $note->getId_note());
             $stm->bindValue(':id_user', $note->getId_user());
+            $stm->bindValue(':modification', $note->getModification());
+            $ret = $stm->execute();
+            return $ret;
+        }
+
+        function deleteNote($note)
+        {
+            $sql = "DELETE FROM notes WHERE id_note = ? AND id_user = ?";
+            parent::getConnection();
+            $stm = parent::$connec->prepare($sql);
+            $stm->bindValue(1, $note->getId_note());
+            $stm->bindValue(2, $note->getId_user());
             $ret = $stm->execute();
             return $ret;
         }
