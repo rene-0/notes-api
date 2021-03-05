@@ -25,8 +25,7 @@
 		date_default_timezone_set('America/Sao_Paulo');
 	//Router
 $table = array(
-	array('url' => 'example', 'REQUEST_METHOD' => 'GET', 'controller' => 'Example'),
-	array('url' => 'example', 'REQUEST_METHOD' => 'POST', 'controller' => 'Example', 'method' => 'teste'),
+	array('url' => 'home', 'REQUEST_METHOD' => 'GET', 'controller' => 'Home', 'method' => 'index'),
 	array('url' => 'notes', 'REQUEST_METHOD' => 'GET', 'controller' => 'Notes', 'method' => 'getNotes'),
 	array('url' => 'notes', 'REQUEST_METHOD' => 'POST', 'CONTENT_TYPE' => 'application/json', 'controller' => 'Notes', 'method' => 'createNote'),
 	array('url' => 'notes', 'REQUEST_METHOD' => 'PATCH', 'CONTENT_TYPE' => 'application/json', 'controller' => 'Notes', 'method' => 'alterNote'),

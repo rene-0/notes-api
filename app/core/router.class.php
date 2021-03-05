@@ -3,7 +3,7 @@
 	class Router
 	{
 		private $table = array();
-		private $controller = "example";
+		private $controller = "home";
 		private $method = "index";
 		private $params = array();
 
